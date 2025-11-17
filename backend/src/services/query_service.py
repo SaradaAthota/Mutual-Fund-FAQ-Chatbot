@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import re
 
 from typing import Optional
 
@@ -12,6 +13,9 @@ from .advice_guard import AdviceGuard
 from .citation import build_citation
 from .llm import OpenAIClient
 from .retriever import RetrieverService
+
+
+GENERIC_SCHEME_TERMS = {"direct", "plan", "growth", "regular", "scheme"}
 
 
 class QueryService:
@@ -80,18 +84,46 @@ class QueryService:
         self._retriever.close()
 
     @staticmethod
-    @staticmethod
     def _select_best_citation(matches, citations, question: str) -> Citation:
-        normalized_question = question.lower()
+        normalized_question = QueryService._normalize_text(question)
+        question_tokens = set(normalized_question.split())
+
+        best_citation = citations[0]
+        best_score = 0
 
         for match, citation in zip(matches, citations):
-            scheme = (match.get("scheme") or "").lower()
+            scheme_tokens = QueryService._scheme_tokens(match.get("scheme") or "")
+            if not scheme_tokens:
+                continue
+            overlap = len(question_tokens.intersection(scheme_tokens))
+            if overlap > best_score:
+                best_score = overlap
+                best_citation = citation
+
+        if best_score:
+            return best_citation
+
+        for match, citation in zip(matches, citations):
+            scheme = QueryService._normalize_text(match.get("scheme") or "")
             if scheme and scheme in normalized_question:
                 return citation
 
         for match, citation in zip(matches, citations):
-            section = (match.get("section") or "").lower()
+            section = QueryService._normalize_text(match.get("section") or "")
             if section and section in normalized_question:
                 return citation
 
         return citations[0]
+
+    @staticmethod
+    def _normalize_text(text: str) -> str:
+        if not text:
+            return ""
+        cleaned = re.sub(r"[^a-z0-9\s]", " ", text.lower())
+        return re.sub(r"\s+", " ", cleaned).strip()
+
+    @staticmethod
+    def _scheme_tokens(text: str) -> set[str]:
+        normalized = QueryService._normalize_text(text)
+        tokens = [token for token in normalized.split() if token and token not in GENERIC_SCHEME_TERMS]
+        return set(tokens)
