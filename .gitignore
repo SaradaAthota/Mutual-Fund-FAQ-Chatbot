@@ -1,0 +1,36 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pytest_cache/
+*.coverage
+coverage.xml
+
+# Virtual environments
+venv/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node / frontend build output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+# Logs
+logs/
+*.log
+
+# Data pipeline scratch outputs
+data-pipeline/tmp.html
+data-pipeline/data-pipeline/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
