@@ -2,7 +2,11 @@
 
 A Retrieval-Augmented Generation (RAG) assistant that answers factual questions about select HDFC Mutual Fund schemes listed on Groww. The stack now uses OpenAI GPT‑4o for grounded answers, `text-embedding-3-small` vectors in Pinecone, and a React UI that enforces ≤3 sentence answers, cites a single official URL, and shows the “Last updated from sources: …” timestamp.
 
-> **Working prototype:** run the backend on `http://127.0.0.1:8001` and the Vite frontend on `http://127.0.0.1:5173`. See setup instructions below.
+> **Live demo:**
+> - Frontend (Vercel): https://mutual-fund-faq-chatbot.vercel.app
+> - Backend (Railway): https://mf-faq-backend-production.up.railway.app
+>
+> **Local prototype:** run the backend on `http://127.0.0.1:8001` and the Vite frontend on `http://127.0.0.1:5173`. See setup instructions below.
 
 ## Scope
 - **AMC:** HDFC Mutual Fund
@@ -28,6 +32,7 @@ A Retrieval-Augmented Generation (RAG) assistant that answers factual questions 
 3. **Frontend (`frontend/`)**
    - Vite + React + CSS modules
    - Centered card UI with example prompts, streaming-ready fetch, citation list, and disclaimer footer sourced from environment
+   - Deployed to Vercel (`frontend` folder as project root)
 
 ## Getting Started
 ### Prerequisites
@@ -91,7 +96,22 @@ The React UI automatically displays the same answer, final citation, and “Last
 - `docs/sources.csv` – canonical Groww URLs + timestamps
 - `docs/sample_qna.md` – 5 sample questions/answers with links
 - `docs/disclaimer.txt` – footer copy rendered in the UI
+- `docs/deployment_architecture.md` – architecture diagram plus Railway/Vercel deployment steps
 - Working prototype instructions (this README) for local execution
+
+## Sample Q&A
+Each answer is ≤3 sentences, cites one Groww URL, and includes the "Last updated" line.
+
+1. **Exit load – HDFC Small Cap Fund**  
+   The exit load for HDFC Small Cap Fund Direct Growth is 1% if redeemed within 1 year. *(Source: https://groww.in/mutual-funds/hdfc-small-cap-fund-direct-growth — Last updated 2025-11-16)*
+2. **Expense ratio – HDFC Flexi Cap Fund**  
+   The expense ratio for HDFC Flexi Cap Fund Direct Plan Growth is 0.74%. *(Source: https://groww.in/mutual-funds/hdfc-equity-fund-direct-growth — Last updated 2025-11-16)*
+3. **Lock-in – HDFC ELSS Tax Saver Fund**  
+   This ELSS plan carries a statutory 3-year lock-in on each investment. *(Source: https://groww.in/mutual-funds/hdfc-elss-tax-saver-fund-direct-plan-growth — Last updated 2025-11-16)*
+4. **Fund manager – HDFC Flexi Cap Fund**  
+   The fund manager is Roshi Jain. *(Source: https://groww.in/mutual-funds/hdfc-equity-fund-direct-growth — Last updated 2025-11-16)*
+5. **Capital-gains statement workflow**  
+   On Groww, go to Investments → Statements → Capital Gains and export the required financial year. *(Source: https://groww.in/blog/how-to-get-capital-gains-statement-for-mutual-fund-investments — Last updated 2025-11-16)*
 
 ## Compliance Guardrails
 - Public sources only – Groww scheme/help pages listed in `docs/sources.csv`
