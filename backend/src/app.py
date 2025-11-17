@@ -50,6 +50,7 @@ app.add_middleware(
         "http://localhost:5173",
         "http://127.0.0.1:3000",
         "http://localhost:3000",
+        "https://mf-faq-backend-production.up.railway.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],

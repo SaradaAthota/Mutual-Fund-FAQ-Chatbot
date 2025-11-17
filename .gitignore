@@ -11,7 +11,7 @@ coverage.xml
 venv/
 
 # Environment files
-.env
+/.env
 .env.*
 !.env.example
 
