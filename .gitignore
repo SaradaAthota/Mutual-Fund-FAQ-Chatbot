@@ -28,6 +28,7 @@ logs/
 # Data pipeline scratch outputs
 data-pipeline/tmp.html
 data-pipeline/data-pipeline/
+data-pipeline/output/
 
 # OS / editor noise
 .DS_Store
